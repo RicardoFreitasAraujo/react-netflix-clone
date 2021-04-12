@@ -3,11 +3,13 @@ import Tmdb from './services/Tmdb';
 import MovieRow from './components/MovieRow';
 import './App.css';
 import FeaturedMovie from './components/FeaturedMovie';
+import Header from './components/header';
 
 const App = () => {
 
   const [movieList, setMovieList] = useState([]);
   const [featuredData, setFeaturedData] = useState(null);
+  const [blackHeader, setBlackHeader] = useState(false);
 
 
   const loadAll = async() => {
@@ -29,7 +31,25 @@ const App = () => {
     loadAll();
   },[])
 
+  useEffect(() => {
+    const scrollListener = () => {
+      if (window.scrollY > 10) {
+        setBlackHeader(true);
+      } else {
+        setBlackHeader(false);
+      }
+    }
+
+    window.addEventListener('scroll', scrollListener);
+
+    /*
+    return () => {
+      window.removeEventListener('scroll', scrollListener);
+    }*/
+  },[])
+
   return(<div className="page">
+    <Header black={blackHeader}/>
       { featuredData &&
         <FeaturedMovie item={featuredData}/>
       }
@@ -38,6 +58,11 @@ const App = () => {
           return(<MovieRow key={key} title={item.title} items={item.items}/>)
         })} 
       </section> 
+      <footer>
+        Desenvolvido por Ricardo Freitas somente para estudos<br/>
+        Direitos de imagem para Netflix<br/>
+        Dados pegos do site Themoviedb.org<br/>
+      </footer>
   </div>);
 }
 
