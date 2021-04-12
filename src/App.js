@@ -26,9 +26,6 @@ const App = () => {
   }
   
   useEffect(() => {
-
-   
-
     loadAll();
   },[])
 
